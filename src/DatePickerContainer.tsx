@@ -6,6 +6,8 @@ import {
     PopoverContent,
     PopoverTrigger,
     usePopover,
+    useMultiStyleConfig,
+    StylesProvider
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { DatePickerContent } from './components/DatePickerContent';
@@ -14,6 +16,7 @@ import { useDatePicker } from './DatePickerContext';
 import { DatePickerProps } from './props';
 
 export const DatePickerContainer: React.FC<DatePickerProps> = (props) => {
+    const styles = useMultiStyleConfig("DatePicker", props)
     const popover = usePopover();
     const {
         selectedDate: [date],
@@ -34,7 +37,8 @@ export const DatePickerContainer: React.FC<DatePickerProps> = (props) => {
         <>
             <PopoverTrigger>
                 <Input
-                    size="lg"
+                    // size="lg"
+                    __css={styles.input}
                     value={value}
                     onFocus={onFocus}
                     onChange={onChange}
@@ -43,10 +47,12 @@ export const DatePickerContainer: React.FC<DatePickerProps> = (props) => {
             <PopoverContent width="auto">
                 <PopoverArrow />
                 <PopoverBody>
-                    <Flex direction="column">
-                        <DatePickerHeader />
-                        <DatePickerContent />
-                    </Flex>
+                    <StylesProvider value={styles}>
+                        <Flex direction="column">
+                            <DatePickerHeader />
+                            <DatePickerContent />
+                        </Flex>
+                    </StylesProvider>
                 </PopoverBody>
             </PopoverContent>
         </>
